@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: MS1 Addition API
+  version: 1.0.0
+  description: Contract for adding two numbers using a GET request.
+servers:
+  - url: http://localhost:8080
+paths:
+  /ms1/add:
+    get:
+      summary: Add two numbers
+      operationId: addNumbers
+      parameters:
+        - name: a
+          in: query
+          required: false
+          description: First number (defaults to 5).
+          schema:
+            type: number
+            format: double
+            default: 5
+          example: 5
+        - name: b
+          in: query
+          required: false
+          description: Second number (defaults to 10).
+          schema:
+            type: number
+            format: double
+            default: 10
+          example: 10
+      responses:
+        '200':
+          description: Addition completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddResponse'
+              example:
+                result: 15
+        '400':
+          description: Invalid query parameter.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  path:
+                    type: string
+components:
+  schemas:
+    AddResponse:
+      type: object
+      required:
+        - result
+      properties:
+        result:
+          type: number
+          format: double
+          description: Sum of a and b.
+          example: 15
